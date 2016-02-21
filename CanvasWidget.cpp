@@ -11,7 +11,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     ui->setupUi(this);
 
     QPixmap base(64, 64);
-    base.fill(Qt::darkBlue);
+    base.fill(Qt::white);
 
     //TODO: who owns mPixmapItem?
     mPixmapItem = mScene.addPixmap(base);

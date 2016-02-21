@@ -14,8 +14,33 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QGraphicsView" name="graphicsView"/>
+    <widget class="QGraphicsView" name="graphicsView">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="backgroundBrush">
+      <brush brushstyle="Dense4Pattern">
+       <color alpha="100">
+        <red>157</red>
+        <green>157</green>
+        <blue>157</blue>
+       </color>
+      </brush>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
