@@ -1,9 +1,12 @@
 #ifndef CANVASWIDGET_H
 #define CANVASWIDGET_H
 
+#include "PaintTool.h"
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QPixmap>
+#include <QScopedPointer>
 #include <QWidget>
 
 namespace Ui {
@@ -19,11 +22,15 @@ public:
     ~CanvasWidget();
 
 protected:
+    void mousePressEvent(QMouseEvent *);
+
     void resizeEvent(QResizeEvent *);
     void showEvent(QShowEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
+
+private:
+    void beginTool(const QPoint &pos);
+    void moveTool(const QPoint &pos);
+    void endTool();
 
 private slots:
     void fillCanvasWithPixmap();
@@ -34,7 +41,8 @@ private:
     QGraphicsScene mScene;
     QGraphicsPixmapItem *mPixmapItem;
 
-
+    bool mIsToolActive;
+    QScopedPointer<PaintTool> mCurrentTool;
 };
 
 #endif // CANVASWIDGET_H

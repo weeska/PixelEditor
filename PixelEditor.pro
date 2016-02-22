@@ -16,11 +16,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     ToolbarWidget.cpp \
-    CanvasWidget.cpp
+    CanvasWidget.cpp \
+    PenPaintTool.cpp
 
 HEADERS  += MainWindow.h \
     ToolbarWidget.h \
-    CanvasWidget.h
+    CanvasWidget.h \
+    PaintTool.h \
+    PenPaintTool.h
 
 FORMS    += MainWindow.ui \
     ToolbarWidget.ui \
