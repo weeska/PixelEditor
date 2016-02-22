@@ -21,6 +21,9 @@ public:
 protected:
     void resizeEvent(QResizeEvent *);
     void showEvent(QShowEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
 private slots:
     void fillCanvasWithPixmap();
@@ -30,6 +33,7 @@ private:
 
     QGraphicsScene mScene;
     QGraphicsPixmapItem *mPixmapItem;
+
 
 };
 
