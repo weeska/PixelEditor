@@ -22,6 +22,7 @@ public:
     ~CanvasWidget();
 
 protected:
+    bool eventFilter(QObject *obj, QEvent *event);
     void mousePressEvent(QMouseEvent *);
 
     void resizeEvent(QResizeEvent *);

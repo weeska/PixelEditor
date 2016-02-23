@@ -23,6 +23,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     //TODO: who owns mPixmapItem?
     mPixmapItem = mScene.addPixmap(base);
     ui->graphicsView->setScene(&mScene);
+    qApp->installEventFilter(this);
 }
 
 CanvasWidget::~CanvasWidget()
@@ -44,6 +45,29 @@ void CanvasWidget::resizeEvent(QResizeEvent *)
 void CanvasWidget::showEvent(QShowEvent *)
 {
     this->fillCanvasWithPixmap();
+}
+
+bool CanvasWidget::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::MouseMove)
+    {
+        // TODO: who emits MouseMove/MouseReleaseEvent?
+        if (obj->objectName() != "MainWindowWindow" && obj->objectName() != "ToolBarWindow")
+        {
+            if (mIsToolActive) {
+                const QPointF itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
+                const QPoint itemPos(std::floor(itemPosF.x()), std::floor(itemPosF.y()));
+
+                this->moveTool(itemPos);
+            }
+        }
+    }
+    if (event->type () == QEvent::MouseButtonRelease)
+    {
+        mIsToolActive = false;
+        this->endTool();
+    }
+    return QObject::eventFilter(obj, event);
 }
 
 void CanvasWidget::mousePressEvent(QMouseEvent *event)
@@ -88,5 +112,9 @@ void CanvasWidget::moveTool(const QPoint &pos)
     mCurrentTool->move(pos, painter);
 
     mPixmapItem->setPixmap(pixmap);
+}
+
+void CanvasWidget::endTool()
+{
 }
 
