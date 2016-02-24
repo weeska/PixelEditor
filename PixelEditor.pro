@@ -1,6 +1,9 @@
 QT       += core gui
 CONFIG   += c++11
 
+mingw|gcc: QMAKE_CXXFLAGS += -Wall
+msvc: QMAKE_CXXFLAGS += /W3
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = PixelEditor
