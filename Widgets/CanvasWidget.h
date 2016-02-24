@@ -1,13 +1,15 @@
 #ifndef CANVASWIDGET_H
 #define CANVASWIDGET_H
 
-#include "PaintTool.h"
+#include "Painting/PaintTool.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QPixmap>
 #include <QScopedPointer>
 #include <QWidget>
+
+namespace Widgets {
 
 namespace Ui {
 class CanvasWidget;
@@ -43,7 +45,9 @@ private:
     QGraphicsPixmapItem *mPixmapItem;
 
     bool mIsToolActive;
-    QScopedPointer<PaintTool> mCurrentTool;
+    QScopedPointer<Painting::PaintTool> mCurrentTool;
 };
+
+}
 
 #endif // CANVASWIDGET_H

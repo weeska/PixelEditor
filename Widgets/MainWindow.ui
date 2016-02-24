@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Widgets::MainWindow</class>
+ <widget class="QMainWindow" name="Widgets::MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="CanvasWidget" name="centralWidget"/>
+  <widget class="Widgets::CanvasWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -28,9 +28,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>CanvasWidget</class>
+   <class>Widgets::CanvasWidget</class>
    <extends>QWidget</extends>
-   <header>CanvasWidget.h</header>
+   <header>Widgets/CanvasWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

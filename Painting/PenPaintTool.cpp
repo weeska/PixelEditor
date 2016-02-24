@@ -1,5 +1,7 @@
 #include "PenPaintTool.h"
 
+using namespace Painting;
+
 void PenPaintTool::begin(const QPoint &point, QPainter &painter)
 {
     painter.drawPoint(point);

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+namespace Widgets {
+
 namespace Ui {
 class ToolbarWidget;
 }
@@ -18,5 +20,7 @@ public:
 private:
     Ui::ToolbarWidget *ui;
 };
+
+}
 
 #endif // TOOLBARWIDGET_H

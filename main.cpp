@@ -1,4 +1,5 @@
-#include "MainWindow.h"
+#include "Widgets/MainWindow.h"
+
 #include <QApplication>
 #include <QDebug>
 #include <QFile>
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
     QApplication application(argc, argv);
     loadStylesheet("://Resources/Stylesheet.qss", application);
 
-    MainWindow window;
+    Widgets::MainWindow window;
     window.showMaximized();
 
     return application.exec();

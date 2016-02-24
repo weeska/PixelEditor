@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CanvasWidget</class>
- <widget class="QWidget" name="CanvasWidget">
+ <class>Widgets::CanvasWidget</class>
+ <widget class="QWidget" name="Widgets::CanvasWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QPoint>
 
+namespace Painting {
+
 class PaintTool
 {
 public:
@@ -12,5 +14,7 @@ public:
     virtual void begin(const QPoint &point, QPainter &painter) = 0;
     virtual void move(const QPoint &point, QPainter &painter) = 0;
 };
+
+}
 
 #endif // PAINTTOOL_H

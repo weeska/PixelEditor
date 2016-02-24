@@ -1,19 +1,21 @@
 #include "CanvasWidget.h"
-#include "PenPaintTool.h"
-
 #include "ui_CanvasWidget.h"
+
+#include "Painting/PenPaintTool.h"
 
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 
+using namespace Widgets;
+
 CanvasWidget::CanvasWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CanvasWidget),
     mPixmapItem(nullptr),
     mIsToolActive(false),
-    mCurrentTool(new PenPaintTool)
+    mCurrentTool(new Painting::PenPaintTool)
 {
     ui->setupUi(this);
 
