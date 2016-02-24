@@ -28,3 +28,6 @@ HEADERS  += MainWindow.h \
 FORMS    += MainWindow.ui \
     ToolbarWidget.ui \
     CanvasWidget.ui
+
+RESOURCES += \
+    Resources.qrc
