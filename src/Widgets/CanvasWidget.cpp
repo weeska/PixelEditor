@@ -13,18 +13,18 @@ using namespace Widgets;
 CanvasWidget::CanvasWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CanvasWidget),
-    mPixmapItem(nullptr),
     mIsToolActive(false),
+    mBaseRect(0, 0, 32, 32),
+    mPaintLayer(nullptr),
     mCurrentTool(new Painting::PenPaintTool)
 {
     ui->setupUi(this);
 
-    QPixmap base(32, 32);
-    base.fill(Qt::white);
-
-    //TODO: who owns mPixmapItem?
-    mPixmapItem = mScene.addPixmap(base);
     ui->graphicsView->setScene(&mScene);
+
+    mPaintLayer = new Painting::Layer(QSize(32, 32), Qt::white);
+    mScene.addItem(mPaintLayer);
+
     qApp->installEventFilter(this);
 }
 
@@ -35,14 +35,13 @@ CanvasWidget::~CanvasWidget()
 
 void CanvasWidget::fillCanvasWithPixmap()
 {
-    ui->graphicsView->fitInView(mPixmapItem, Qt::KeepAspectRatio);
+    ui->graphicsView->fitInView(mBaseRect, Qt::KeepAspectRatio);
 }
 
 void CanvasWidget::resizeEvent(QResizeEvent *)
 {
     this->fillCanvasWithPixmap();
 }
-
 
 void CanvasWidget::showEvent(QShowEvent *)
 {
@@ -53,8 +52,7 @@ bool CanvasWidget::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::MouseMove)
     {
-        // TODO: who emits MouseMove/MouseReleaseEvent?
-        if (obj->objectName() != "MainWindowWindow" && obj->objectName() != "ToolBarWindow")
+        if (obj->objectName() != "Widgets__MainWindowWindow" && obj->objectName() != "ToolBarWindow")
         {
             if (mIsToolActive) {
                 const QPointF itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
@@ -96,24 +94,24 @@ void CanvasWidget::mousePressEvent(QMouseEvent *event)
 
 void CanvasWidget::beginTool(const QPoint &pos)
 {
-    auto pixmap = mPixmapItem->pixmap();
+    auto pixmap = mPaintLayer->pixmap();
     QPainter painter(&pixmap);
     painter.setBrush(QBrush(QColor(Qt::blue)));
 
     mCurrentTool->begin(pos, painter);
 
-    mPixmapItem->setPixmap(pixmap);
+    mPaintLayer->setPixmap(pixmap);
 }
 
 void CanvasWidget::moveTool(const QPoint &pos)
 {
-    auto pixmap = mPixmapItem->pixmap();
+    auto pixmap = mPaintLayer->pixmap();
     QPainter painter(&pixmap);
     painter.setBrush(QBrush(QColor(Qt::blue)));
 
     mCurrentTool->move(pos, painter);
 
-    mPixmapItem->setPixmap(pixmap);
+    mPaintLayer->setPixmap(pixmap);
 }
 
 void CanvasWidget::endTool()

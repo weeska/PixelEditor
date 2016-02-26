@@ -14,14 +14,16 @@ SOURCES += \
     Widgets/MainWindow.cpp \
     Widgets/ToolbarWidget.cpp \
     Widgets/CanvasWidget.cpp \
-    Painting/PenPaintTool.cpp
+    Painting/PenPaintTool.cpp \
+    Painting/Layer.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
     Widgets/ToolbarWidget.h \
     Widgets/CanvasWidget.h \
     Painting/PaintTool.h \
-    Painting/PenPaintTool.h
+    Painting/PenPaintTool.h \
+    Painting/Layer.h
 
 FORMS += \
     Widgets/MainWindow.ui \

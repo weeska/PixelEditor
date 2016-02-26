@@ -9,6 +9,8 @@
 #include <QScopedPointer>
 #include <QWidget>
 
+#include <Painting/Layer.h>
+
 namespace Widgets {
 
 namespace Ui {
@@ -41,10 +43,10 @@ private slots:
 private:
     Ui::CanvasWidget *ui;
 
-    QGraphicsScene mScene;
-    QGraphicsPixmapItem *mPixmapItem;
-
     bool mIsToolActive;
+    QGraphicsScene mScene;
+    QRect mBaseRect;
+    Painting::Layer *mPaintLayer;
     QScopedPointer<Painting::PaintTool> mCurrentTool;
 };
 
