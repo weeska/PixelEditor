@@ -22,8 +22,14 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
     ui->graphicsView->setScene(&mScene);
 
-    mPaintLayer = new Painting::Layer(QSize(32, 32), Qt::white);
+    mPaintLayer = new Painting::Layer(QSize(32, 32), Qt::transparent);
+    mDisplayLayer = new Painting::Layer(QSize(32, 32), Qt::white);
+
+    mDisplayLayer->setZValue(0);
+    mPaintLayer->setZValue(1);
+
     mScene.addItem(mPaintLayer);
+    mScene.addItem(mDisplayLayer);
 
     qApp->installEventFilter(this);
 }
@@ -46,6 +52,11 @@ void CanvasWidget::resizeEvent(QResizeEvent *)
 void CanvasWidget::showEvent(QShowEvent *)
 {
     this->fillCanvasWithPixmap();
+}
+
+void CanvasWidget::setCurrentTool(Painting::PaintTool *tool)
+{
+    mCurrentTool.reset(tool);
 }
 
 bool CanvasWidget::eventFilter(QObject *obj, QEvent *event)
@@ -94,27 +105,34 @@ void CanvasWidget::mousePressEvent(QMouseEvent *event)
 
 void CanvasWidget::beginTool(const QPoint &pos)
 {
-    auto pixmap = mPaintLayer->pixmap();
+    QPixmap pixmap(mDisplayLayer->pixmap());
+
     QPainter painter(&pixmap);
-    painter.setBrush(QBrush(QColor(Qt::blue)));
+    painter.setBrush(QBrush(QColor(Qt::transparent)));
 
     mCurrentTool->begin(pos, painter);
-
     mPaintLayer->setPixmap(pixmap);
 }
 
 void CanvasWidget::moveTool(const QPoint &pos)
 {
-    auto pixmap = mPaintLayer->pixmap();
+    QPixmap pixmap(mDisplayLayer->pixmap());
+
     QPainter painter(&pixmap);
-    painter.setBrush(QBrush(QColor(Qt::blue)));
+    painter.setBrush(QBrush(QColor(Qt::transparent)));
 
     mCurrentTool->move(pos, painter);
-
     mPaintLayer->setPixmap(pixmap);
 }
 
 void CanvasWidget::endTool()
 {
-}
+    //TODO:
+    QPixmap paintPixmap(mPaintLayer->pixmap());
+    QPixmap displayPixmap(mDisplayLayer->pixmap());
 
+    QPainter painter(&displayPixmap);
+
+    painter.drawPixmap(QPoint(), paintPixmap);
+    mDisplayLayer->setPixmap(displayPixmap);
+}

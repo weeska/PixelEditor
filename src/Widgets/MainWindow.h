@@ -17,6 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void initializeToolWidget();
+
 private:
     Ui::MainWindow *ui;
 };

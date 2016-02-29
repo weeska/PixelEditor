@@ -10,6 +10,7 @@
 #include <QWidget>
 
 #include <Painting/Layer.h>
+#include <Painting/PaintTool.h>
 
 namespace Widgets {
 
@@ -25,6 +26,8 @@ public:
     explicit CanvasWidget(QWidget *parent = 0);
     ~CanvasWidget();
 
+    void setCurrentTool(Painting::PaintTool *tool);
+
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void mousePressEvent(QMouseEvent *);
@@ -37,7 +40,6 @@ private:
     void moveTool(const QPoint &pos);
     void endTool();
 
-private slots:
     void fillCanvasWithPixmap();
 
 private:
@@ -46,6 +48,7 @@ private:
     bool mIsToolActive;
     QGraphicsScene mScene;
     QRect mBaseRect;
+    Painting::Layer *mDisplayLayer;
     Painting::Layer *mPaintLayer;
     QScopedPointer<Painting::PaintTool> mCurrentTool;
 };

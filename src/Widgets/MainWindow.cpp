@@ -13,13 +13,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    auto toolsDock = new QDockWidget("Tools", this);
-    toolsDock->setWidget(new ToolbarWidget(toolsDock));
-
-    this->addDockWidget(Qt::LeftDockWidgetArea, toolsDock);
+    this->initializeToolWidget();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initializeToolWidget()
+{
+    auto toolsDock = new QDockWidget("Tools", this);
+    toolsDock->setWidget(new ToolbarWidget(*ui->centralWidget, toolsDock));
+
+    this->addDockWidget(Qt::LeftDockWidgetArea, toolsDock);
+
 }

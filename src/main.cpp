@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     QApplication application(argc, argv);
     loadStylesheet("://Resources/Stylesheet.qss", application);
 
+
     Widgets::MainWindow window;
     window.showMaximized();
 
