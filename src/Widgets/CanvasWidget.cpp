@@ -22,20 +22,22 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
     ui->graphicsView->setScene(&mScene);
 
-    mPaintLayer = new Painting::Layer(QSize(32, 32), Qt::transparent);
-    mDisplayLayer = new Painting::Layer(QSize(32, 32), Qt::white);
+    mPaintLayer.reset(new Painting::Layer(QSize(32, 32), Qt::transparent));
+    mDisplayLayer.reset(new Painting::Layer(QSize(32, 32), Qt::white));
 
     mDisplayLayer->setZValue(0);
     mPaintLayer->setZValue(1);
 
-    mScene.addItem(mPaintLayer);
-    mScene.addItem(mDisplayLayer);
+    mScene.addItem(mPaintLayer.data());
+    mScene.addItem(mDisplayLayer.data());
 
     qApp->installEventFilter(this);
 }
 
 CanvasWidget::~CanvasWidget()
 {
+    mScene.removeItem(mDisplayLayer.data());
+    mScene.removeItem(mPaintLayer.data());
     delete ui;
 }
 
@@ -105,7 +107,7 @@ void CanvasWidget::mousePressEvent(QMouseEvent *event)
 
 void CanvasWidget::beginTool(const QPoint &pos)
 {
-    QPixmap pixmap(mDisplayLayer->pixmap());
+    auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
@@ -116,7 +118,7 @@ void CanvasWidget::beginTool(const QPoint &pos)
 
 void CanvasWidget::moveTool(const QPoint &pos)
 {
-    QPixmap pixmap(mDisplayLayer->pixmap());
+    auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
@@ -127,9 +129,8 @@ void CanvasWidget::moveTool(const QPoint &pos)
 
 void CanvasWidget::endTool()
 {
-    //TODO:
-    QPixmap paintPixmap(mPaintLayer->pixmap());
-    QPixmap displayPixmap(mDisplayLayer->pixmap());
+    const auto &paintPixmap = mPaintLayer->pixmap();
+    auto displayPixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&displayPixmap);
 

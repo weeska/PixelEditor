@@ -48,8 +48,8 @@ private:
     bool mIsToolActive;
     QGraphicsScene mScene;
     QRect mBaseRect;
-    Painting::Layer *mDisplayLayer;
-    Painting::Layer *mPaintLayer;
+    QScopedPointer<Painting::Layer> mDisplayLayer;
+    QScopedPointer<Painting::Layer> mPaintLayer;
     QScopedPointer<Painting::PaintTool> mCurrentTool;
 };
 
