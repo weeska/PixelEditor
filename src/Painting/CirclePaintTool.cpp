@@ -7,7 +7,7 @@ namespace Painting {
 void CirclePaintTool::begin(const QPoint &point, QPainter &painter)
 {
     mStart = point;
-    painter.drawEllipse(point, 1, 1);
+    this->move(mStart, painter);
 }
 
 void CirclePaintTool::move(const QPoint &point, QPainter &painter)
