@@ -29,8 +29,9 @@ public:
     void setCurrentTool(Painting::PaintTool *tool);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
     void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
     void resizeEvent(QResizeEvent *);
     void showEvent(QShowEvent *);
@@ -50,7 +51,7 @@ private:
     QRect mBaseRect;
     QScopedPointer<Painting::Layer> mDisplayLayer;
     QScopedPointer<Painting::Layer> mPaintLayer;
-    QScopedPointer<Painting::PaintTool> mCurrentTool;
+    QScopedPointer<Painting::PaintTool> mCurrentTool;    
 };
 
 }

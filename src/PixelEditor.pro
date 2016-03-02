@@ -16,7 +16,8 @@ SOURCES += \
     Widgets/CanvasWidget.cpp \
     Painting/PenPaintTool.cpp \
     Painting/Layer.cpp \
-    Painting/CirclePaintTool.cpp
+    Painting/CirclePaintTool.cpp \
+    Widgets/CanvasGraphicsView.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
@@ -25,7 +26,8 @@ HEADERS  += \
     Painting/PaintTool.h \
     Painting/PenPaintTool.h \
     Painting/Layer.h \
-    Painting/CirclePaintTool.h
+    Painting/CirclePaintTool.h \
+    Widgets/CanvasGraphicsView.h
 
 FORMS += \
     Widgets/MainWindow.ui \

@@ -30,8 +30,6 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
     mScene.addItem(mPaintLayer.data());
     mScene.addItem(mDisplayLayer.data());
-
-    qApp->installEventFilter(this);
 }
 
 CanvasWidget::~CanvasWidget()
@@ -61,28 +59,6 @@ void CanvasWidget::setCurrentTool(Painting::PaintTool *tool)
     mCurrentTool.reset(tool);
 }
 
-bool CanvasWidget::eventFilter(QObject *obj, QEvent *event)
-{
-    if (event->type() == QEvent::MouseMove)
-    {
-        if (obj->objectName() != "Widgets__MainWindowWindow" && obj->objectName() != "ToolBarWindow")
-        {
-            if (mIsToolActive) {
-                const QPointF itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
-                const QPoint itemPos(std::floor(itemPosF.x()), std::floor(itemPosF.y()));
-
-                this->moveTool(itemPos);
-            }
-        }
-    }
-    if (event->type () == QEvent::MouseButtonRelease)
-    {
-        mIsToolActive = false;
-        this->endTool();
-    }
-    return QObject::eventFilter(obj, event);
-}
-
 void CanvasWidget::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() != Qt::LeftButton)
@@ -103,6 +79,22 @@ void CanvasWidget::mousePressEvent(QMouseEvent *event)
 
     this->beginTool(itemPos);
 
+}
+
+void CanvasWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    mIsToolActive = false;
+    this->endTool();
+}
+
+void CanvasWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (mIsToolActive) {
+        const QPointF itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
+        const QPoint itemPos(std::floor(itemPosF.x()), std::floor(itemPosF.y()));
+
+        this->moveTool(itemPos);
+    }
 }
 
 void CanvasWidget::beginTool(const QPoint &pos)
