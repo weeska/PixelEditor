@@ -10,11 +10,15 @@
 
 using namespace Widgets;
 
+namespace {
+const QRect defaultRect(0, 0, 32, 32);
+}
+
 CanvasWidget::CanvasWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CanvasWidget),
     mIsToolActive(false),
-    mBaseRect(0, 0, 32, 32),
+    mBaseRect(::defaultRect),
     mPaintLayer(nullptr),
     mCurrentTool(new Painting::PenPaintTool)
 {
@@ -22,8 +26,8 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
     ui->graphicsView->setScene(&mScene);
 
-    mPaintLayer.reset(new Painting::Layer(QSize(32, 32), Qt::transparent));
-    mDisplayLayer.reset(new Painting::Layer(QSize(32, 32), Qt::white));
+    mPaintLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::transparent));
+    mDisplayLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
 
     mDisplayLayer->setZValue(0);
     mPaintLayer->setZValue(1);
