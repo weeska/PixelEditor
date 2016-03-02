@@ -4,6 +4,7 @@
 #include <QHash>
 
 #include <Painting/CirclePaintTool.h>
+#include <Painting/LinePaintTool.h>
 #include <Painting/PenPaintTool.h>
 
 using namespace Widgets;
@@ -13,12 +14,14 @@ namespace
 enum ToolType
 {
     Pen,
-    Circle
+    Circle,
+    Line
 };
 
 const QHash<int, QSharedPointer<Painting::PaintTool> > ToolsByType{
     {Pen, QSharedPointer<Painting::PenPaintTool>::create()},
-    {Circle, QSharedPointer<Painting::CirclePaintTool>::create()}
+    {Circle, QSharedPointer<Painting::CirclePaintTool>::create()},
+    {Line, QSharedPointer<Painting::LinePaintTool>::create()}
 };
 
 }
@@ -31,9 +34,11 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     ui->setupUi(this);
 
     this->connect(ui->circleButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
+    this->connect(ui->lineButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
     this->connect(ui->penButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
 
     mToolMapper.setMapping(ui->circleButton, static_cast<int>(ToolType::Circle));
+    mToolMapper.setMapping(ui->lineButton, static_cast<int>(ToolType::Line));
     mToolMapper.setMapping(ui->penButton, static_cast<int>(ToolType::Pen));
 
     this->connect(&mToolMapper, SIGNAL(mapped(int)), SLOT(onToolChanged(int)));
