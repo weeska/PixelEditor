@@ -3,6 +3,7 @@
 
 #include "Painting/PaintTool.h"
 
+#include <QColor>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QPixmap>
@@ -27,6 +28,7 @@ public:
     ~CanvasWidget();
 
     void setCurrentTool(Painting::PaintTool *tool);
+    void setCurrentColor(QColor currentColor);
 
 protected:
     void mousePressEvent(QMouseEvent *);
@@ -51,7 +53,9 @@ private:
     QRect mBaseRect;
     QScopedPointer<Painting::Layer> mDisplayLayer;
     QScopedPointer<Painting::Layer> mPaintLayer;
-    QScopedPointer<Painting::PaintTool> mCurrentTool;    
+    QScopedPointer<Painting::PaintTool> mCurrentTool;
+
+    QColor mCurrentColor;
 };
 
 }

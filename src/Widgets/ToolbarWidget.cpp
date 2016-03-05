@@ -2,6 +2,9 @@
 #include "ui_ToolbarWidget.h"
 
 #include <QHash>
+#include <QIcon>
+#include <QDebug>
+#include <QColorDialog>
 
 #include <Painting/CirclePaintTool.h>
 #include <Painting/LinePaintTool.h>
@@ -29,7 +32,8 @@ const QHash<int, QSharedPointer<Painting::PaintTool> > ToolsByType{
 ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolbarWidget),
-    mCanvas(canvas)
+    mCanvas(canvas),
+    mCurrentColor(Qt::black)
 {
     ui->setupUi(this);
 
@@ -42,11 +46,22 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     mToolMapper.setMapping(ui->penButton, static_cast<int>(ToolType::Pen));
 
     this->connect(&mToolMapper, SIGNAL(mapped(int)), SLOT(onToolChanged(int)));
+
+    this->updateColor();
+
+    this->connect(ui->currentColorButton, SIGNAL(pressed()), SLOT(onCurrentColorButtonPressed()));
 }
 
 ToolbarWidget::~ToolbarWidget()
 {
     delete ui;
+}
+
+void ToolbarWidget::setColor(const QColor &currentColor)
+{
+    mCurrentColor = currentColor;
+
+    updateColor();
 }
 
 void ToolbarWidget::onToolChanged(int toolId)
@@ -57,4 +72,21 @@ void ToolbarWidget::onToolChanged(int toolId)
     {
         mCanvas.setCurrentTool(tool.data());
     }
+}
+
+void ToolbarWidget::updateColor()
+{
+    QPixmap currentColorMap(32, 32);
+    currentColorMap.fill(mCurrentColor);
+    ui->currentColorButton->setIcon(QIcon(currentColorMap));
+
+    mCanvas.setCurrentColor(mCurrentColor);
+}
+
+void ToolbarWidget::onCurrentColorButtonPressed()
+{
+    QColorDialog colorPicker(mCurrentColor, this);
+    mCurrentColor = colorPicker.getColor(mCurrentColor, this);
+
+    this->updateColor();
 }
