@@ -3,7 +3,11 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+#include <QDebug>
 #include <QDockWidget>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QStandardPaths>
 
 using namespace Widgets;
 
@@ -14,6 +18,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->initializeToolWidget();
+
+
+    this->connect(ui->actionNew, SIGNAL(triggered(bool)), SLOT(onNewImageAction()));
+
+    this->connect(ui->actionLoad_Image, SIGNAL(triggered(bool)), SLOT(onLoadImageAction()));
+
+    this->connect(ui->actionSave_Image, SIGNAL(triggered(bool)), SLOT(onSaveImageAction()));
+    this->connect(ui->actionSave_Image_As, SIGNAL(triggered(bool)), SLOT(onSaveImageAsAction()));
+
+    this->connect(ui->actionExit, SIGNAL(triggered(bool)), SLOT(close()));
 }
 
 MainWindow::~MainWindow()
@@ -28,4 +42,55 @@ void MainWindow::initializeToolWidget()
 
     this->addDockWidget(Qt::LeftDockWidgetArea, toolsDock);
 
+}
+
+void MainWindow::onNewImageAction()
+{
+    ui->centralWidget->clear();
+    mFilename.clear();
+}
+
+QString MainWindow::standardLocation() const
+{
+    const auto openDirList = QStringList()
+            << QStandardPaths::standardLocations(QStandardPaths::PicturesLocation)
+            << qApp->applicationDirPath();
+
+    return openDirList.first();
+}
+
+void MainWindow::onLoadImageAction()
+{
+    const auto openFilename = QFileDialog::getOpenFileName(this, "Load Image", this->standardLocation(), "PNG-Image (*.png)");
+
+    if(QFileInfo(openFilename).exists()) {
+        const QImage image(openFilename);
+        ui->centralWidget->initWithImage(image);
+    }
+}
+
+void MainWindow::onSaveImageAction()
+{
+    if(mFilename.isEmpty()) {
+        this->onSaveImageAsAction();
+        return;
+    }
+
+    this->saveImage();
+}
+
+void MainWindow::saveImage()
+{
+    auto image = ui->centralWidget->grabImage();
+    if(!image.save(mFilename)) {
+        //TODO: show warning
+    }
+}
+
+void MainWindow::onSaveImageAsAction()
+{
+    const auto saveFilename = QFileDialog::getSaveFileName(this, "Save Image", this->standardLocation(), "PNG-Image (*.png)");
+
+    mFilename = saveFilename;
+    this->saveImage();
 }

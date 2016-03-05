@@ -27,7 +27,12 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
     ui->graphicsView->setScene(&mScene);
 
-    mPaintLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::transparent));
+    this->initLayers();
+}
+
+void CanvasWidget::initLayers()
+{
+    mPaintLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
     mDisplayLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
 
     mDisplayLayer->setZValue(0);
@@ -37,11 +42,39 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     mScene.addItem(mDisplayLayer.data());
 }
 
-CanvasWidget::~CanvasWidget()
+void CanvasWidget::removeLayers()
 {
     mScene.removeItem(mDisplayLayer.data());
     mScene.removeItem(mPaintLayer.data());
+}
+
+CanvasWidget::~CanvasWidget()
+{
+    this->removeLayers();
     delete ui;
+}
+
+void CanvasWidget::clear()
+{
+    this->removeLayers();
+    this->initLayers();
+}
+
+QImage CanvasWidget::grabImage() const
+{
+    return mDisplayLayer->pixmap().toImage();
+}
+
+void CanvasWidget::initWithImage(const QImage &image)
+{
+    auto pixmap = QPixmap::fromImage(image);
+    mDisplayLayer->setPixmap(pixmap);
+
+    pixmap.fill(Qt::transparent);
+    mPaintLayer->setPixmap(pixmap);
+
+    mBaseRect.setSize(pixmap.size());
+    this->fillCanvasWithPixmap();
 }
 
 void CanvasWidget::fillCanvasWithPixmap()

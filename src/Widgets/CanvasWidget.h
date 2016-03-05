@@ -27,7 +27,15 @@ public:
     explicit CanvasWidget(QWidget *parent = 0);
     ~CanvasWidget();
 
+    /// Resets the canvas to its default color
+    void clear();
+
+    QImage grabImage() const;
+    void initWithImage(const QImage &image);
+
+    /// Sets the tool that is used to paint
     void setCurrentTool(Painting::PaintTool *tool);
+    /// Sets the outline color that is used to paint
     void setCurrentColor(QColor currentColor);
 
 protected:
@@ -44,6 +52,8 @@ private:
     void endTool();
 
     void fillCanvasWithPixmap();
+    void removeLayers();
+    void initLayers();
 
 private:
     Ui::CanvasWidget *ui;

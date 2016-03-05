@@ -20,7 +20,18 @@ public:
     void initializeToolWidget();
 
 private:
+    QString standardLocation() const;
+
+private slots:
+    void onNewImageAction();
+    void onLoadImageAction();
+    void onSaveImageAction();
+    void onSaveImageAsAction();
+
+private:
     Ui::MainWindow *ui;
+    QString mFilename;
+    void saveImage();
 };
 
 }
