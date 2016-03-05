@@ -61,7 +61,7 @@ void CanvasWidget::showEvent(QShowEvent *)
 
 void CanvasWidget::setCurrentTool(Painting::PaintTool *tool)
 {
-    mCurrentTool.reset(tool);
+    mCurrentTool = tool;
 }
 
 void CanvasWidget::setCurrentColor(QColor currentColor)

@@ -53,7 +53,7 @@ private:
     QRect mBaseRect;
     QScopedPointer<Painting::Layer> mDisplayLayer;
     QScopedPointer<Painting::Layer> mPaintLayer;
-    QScopedPointer<Painting::PaintTool> mCurrentTool;
+    Painting::PaintTool *mCurrentTool;
 
     QColor mCurrentColor;
 };
