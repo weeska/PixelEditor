@@ -11,8 +11,8 @@ class PaintTool
 public:
     virtual ~PaintTool() {}
 
-    virtual void begin(const QPoint &point, QPainter &painter) = 0;
-    virtual void move(const QPoint &point, QPainter &painter) = 0;
+    virtual void begin(const QPoint &point, QPainter &painter, const QPixmap &pixmap) = 0;
+    virtual void move(const QPoint &point, QPainter &painter, const QPixmap &pixmap) = 0;
 };
 
 }

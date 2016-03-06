@@ -14,22 +14,24 @@ SOURCES += \
     Widgets/MainWindow.cpp \
     Widgets/ToolbarWidget.cpp \
     Widgets/CanvasWidget.cpp \
-    Painting/PenPaintTool.cpp \
     Painting/Layer.cpp \
-    Painting/CirclePaintTool.cpp \
     Widgets/CanvasGraphicsView.cpp \
-    Painting/LinePaintTool.cpp
+    Painting/FillTool.cpp \
+    Painting/CircleTool.cpp \
+    Painting/LineTool.cpp \
+    Painting/PenTool.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
     Widgets/ToolbarWidget.h \
     Widgets/CanvasWidget.h \
     Painting/PaintTool.h \
-    Painting/PenPaintTool.h \
     Painting/Layer.h \
-    Painting/CirclePaintTool.h \
     Widgets/CanvasGraphicsView.h \
-    Painting/LinePaintTool.h
+    Painting/FillTool.h \
+    Painting/CircleTool.h \
+    Painting/LineTool.h \
+    Painting/PenTool.h
 
 FORMS += \
     Widgets/MainWindow.ui \

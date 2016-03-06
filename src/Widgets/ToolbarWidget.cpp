@@ -6,9 +6,10 @@
 #include <QDebug>
 #include <QColorDialog>
 
-#include <Painting/CirclePaintTool.h>
-#include <Painting/LinePaintTool.h>
-#include <Painting/PenPaintTool.h>
+#include <Painting/CircleTool.h>
+#include <Painting/LineTool.h>
+#include <Painting/PenTool.h>
+#include <Painting/FillTool.h>
 
 using namespace Widgets;
 
@@ -18,13 +19,15 @@ enum ToolType
 {
     Pen,
     Circle,
-    Line
+    Line,
+    Fill
 };
 
 const QHash<int, QSharedPointer<Painting::PaintTool> > ToolsByType{
-    {Pen, QSharedPointer<Painting::PenPaintTool>::create()},
-    {Circle, QSharedPointer<Painting::CirclePaintTool>::create()},
-    {Line, QSharedPointer<Painting::LinePaintTool>::create()}
+    {Pen, QSharedPointer<Painting::PenTool>::create()},
+    {Circle, QSharedPointer<Painting::CircleTool>::create()},
+    {Line, QSharedPointer<Painting::LineTool>::create()},
+    {Fill, QSharedPointer<Painting::FillTool>::create()}
 };
 
 }
@@ -40,10 +43,12 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     this->connect(ui->circleButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
     this->connect(ui->lineButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
     this->connect(ui->penButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
+    this->connect(ui->fillButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
 
     mToolMapper.setMapping(ui->circleButton, static_cast<int>(ToolType::Circle));
     mToolMapper.setMapping(ui->lineButton, static_cast<int>(ToolType::Line));
     mToolMapper.setMapping(ui->penButton, static_cast<int>(ToolType::Pen));
+    mToolMapper.setMapping(ui->fillButton, static_cast<int>(ToolType::Fill));
 
     this->connect(&mToolMapper, SIGNAL(mapped(int)), SLOT(onToolChanged(int)));
 

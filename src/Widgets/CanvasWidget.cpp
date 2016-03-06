@@ -1,7 +1,7 @@
 #include "CanvasWidget.h"
 #include "ui_CanvasWidget.h"
 
-#include "Painting/PenPaintTool.h"
+#include "Painting/PenTool.h"
 
 #include <QDebug>
 #include <QGraphicsPixmapItem>
@@ -20,7 +20,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     mIsToolActive(false),
     mBaseRect(::defaultRect),
     mPaintLayer(nullptr),
-    mCurrentTool(new Painting::PenPaintTool),
+    mCurrentTool(new Painting::PenTool),
     mCurrentColor(Qt::black)
 {
     ui->setupUi(this);
@@ -148,7 +148,7 @@ void CanvasWidget::beginTool(const QPoint &pos)
     painter.setPen(mCurrentColor);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
 
-    mCurrentTool->begin(pos, painter);
+    mCurrentTool->begin(pos, painter, pixmap);
     mPaintLayer->setPixmap(pixmap);
 }
 
@@ -160,7 +160,7 @@ void CanvasWidget::moveTool(const QPoint &pos)
     painter.setPen(mCurrentColor);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
 
-    mCurrentTool->move(pos, painter);
+    mCurrentTool->move(pos, painter, pixmap);
     mPaintLayer->setPixmap(pixmap);
 }
 
