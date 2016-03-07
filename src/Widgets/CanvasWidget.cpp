@@ -20,7 +20,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     mIsToolActive(false),
     mBaseRect(::defaultRect),
     mPaintLayer(nullptr),
-    mCurrentTool(new Painting::PenTool),
+    mCurrentTool(nullptr),
     mCurrentColor(Qt::black)
 {
     ui->setupUi(this);
@@ -142,6 +142,11 @@ void CanvasWidget::mouseMoveEvent(QMouseEvent *event)
 
 void CanvasWidget::beginTool(const QPoint &pos)
 {
+    Q_ASSERT(mCurrentTool);
+    if(!mCurrentTool) {
+        return;
+    }
+
     auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);
@@ -154,6 +159,11 @@ void CanvasWidget::beginTool(const QPoint &pos)
 
 void CanvasWidget::moveTool(const QPoint &pos)
 {
+    Q_ASSERT(mCurrentTool);
+    if(!mCurrentTool) {
+        return;
+    }
+
     auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);

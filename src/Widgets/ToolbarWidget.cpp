@@ -51,10 +51,10 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     mToolMapper.setMapping(ui->fillButton, static_cast<int>(ToolType::Fill));
 
     this->connect(&mToolMapper, SIGNAL(mapped(int)), SLOT(onToolChanged(int)));
-
-    this->updateColor();
+    this->onToolChanged(ToolType::Pen);
 
     this->connect(ui->currentColorButton, SIGNAL(pressed()), SLOT(onCurrentColorButtonPressed()));
+    this->updateColor();
 }
 
 ToolbarWidget::~ToolbarWidget()
