@@ -11,6 +11,16 @@
 
 using namespace Widgets;
 
+namespace {
+const QStringList savePictureFormats {
+    "PNG-Image (*.png)"
+};
+
+const QStringList loadPictureFormats = QStringList()
+    << savePictureFormats
+    << "GIF-Image (*.gif)";
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -37,7 +47,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initializeToolWidget()
 {
-    auto toolsDock = new QDockWidget("Tools", this);
+    auto toolsDock = new QDockWidget(tr("Tools"), this);
     toolsDock->setWidget(new ToolbarWidget(*ui->centralWidget, toolsDock));
 
     this->addDockWidget(Qt::LeftDockWidgetArea, toolsDock);
@@ -61,7 +71,10 @@ QString MainWindow::standardLocation() const
 
 void MainWindow::onLoadImageAction()
 {
-    const auto openFilename = QFileDialog::getOpenFileName(this, "Load Image", this->standardLocation(), "PNG-Image (*.png)");
+    const auto openFilename = QFileDialog::getOpenFileName(this,
+                                                           tr("Load Image"),
+                                                           this->standardLocation(),
+                                                           ::loadPictureFormats.join(";;"));
 
     if(QFileInfo(openFilename).exists()) {
         const QImage image(openFilename);
@@ -89,7 +102,10 @@ void MainWindow::saveImage()
 
 void MainWindow::onSaveImageAsAction()
 {
-    const auto saveFilename = QFileDialog::getSaveFileName(this, "Save Image", this->standardLocation(), "PNG-Image (*.png)");
+    const auto saveFilename = QFileDialog::getSaveFileName(this,
+                                                           tr("Save Image"),
+                                                           this->standardLocation(),
+                                                           ::savePictureFormats.join(";;"));
 
     mFilename = saveFilename;
     this->saveImage();
