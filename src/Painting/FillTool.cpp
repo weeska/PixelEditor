@@ -5,10 +5,13 @@
 
 void Painting::FillTool::begin(const QPoint &point, QPainter &painter, const QPixmap &pixmap)
 {
-    QRgb oldColor = pixmap.toImage().pixel(point);
-    QRect pixmapRect = pixmap.rect();
+    QImage image = pixmap.toImage();
+    const QRect pixmapRect = pixmap.rect();
 
-    if (QColor(oldColor) == painter.pen().color())
+    const QRgb oldColor = image.pixel(point);
+    const QRgb newColor = painter.pen().color().rgb();
+
+    if (oldColor == newColor)
     {
         return;
     }
@@ -18,13 +21,13 @@ void Painting::FillTool::begin(const QPoint &point, QPainter &painter, const QPi
 
     while(!neighbours.isEmpty())
     {
-        QPoint currentPoint = neighbours.dequeue();
+        const QPoint currentPoint = neighbours.dequeue();
         if (pixmapRect.contains(currentPoint))
         {
-            QRgb currentColor = pixmap.toImage().pixel(currentPoint);
+            const QRgb currentColor = image.pixel(currentPoint);
             if (currentColor == oldColor)
             {
-                painter.drawPoint(currentPoint);
+                image.setPixel(currentPoint, newColor);
 
                 neighbours.enqueue(QPoint(currentPoint.x() - 1, currentPoint.y()));
                 neighbours.enqueue(QPoint(currentPoint.x() + 1, currentPoint.y()));
@@ -33,6 +36,7 @@ void Painting::FillTool::begin(const QPoint &point, QPainter &painter, const QPi
             }
         }
     }
+    painter.drawImage(QPoint(), image);
 }
 
 void Painting::FillTool::move(const QPoint &point, QPainter &painter, const QPixmap &pixmap)
