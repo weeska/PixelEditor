@@ -6,8 +6,6 @@
 
 #include <Painting/FillTool.h>
 
-using namespace std::chrono;
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
