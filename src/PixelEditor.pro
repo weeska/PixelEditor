@@ -19,7 +19,8 @@ SOURCES += \
     Painting/FillTool.cpp \
     Painting/CircleTool.cpp \
     Painting/LineTool.cpp \
-    Painting/PenTool.cpp
+    Painting/PenTool.cpp \
+    Painting/Context.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
@@ -31,7 +32,8 @@ HEADERS  += \
     Painting/FillTool.h \
     Painting/CircleTool.h \
     Painting/LineTool.h \
-    Painting/PenTool.h
+    Painting/PenTool.h \
+    Painting/Context.h
 
 FORMS += \
     Widgets/MainWindow.ui \

@@ -71,7 +71,7 @@ void ToolbarWidget::setPaintColor(const QColor &paintColor)
 
     this->updatePaintColorLabel();
 
-    mCanvas.setPaintColor(mPaintColor);
+    mCanvas.context().setPaintColor(mPaintColor);
 }
 
 void ToolbarWidget::setBackgroundColor(const QColor &backgroundColor)
@@ -80,7 +80,7 @@ void ToolbarWidget::setBackgroundColor(const QColor &backgroundColor)
 
     this->updateBackgroundColorLabel();
 
-    mCanvas.setBackgroundColor(mBackgroundColor);
+    mCanvas.context().setBackgroundColor(mBackgroundColor);
 }
 
 void ToolbarWidget::onToolChanged(int toolId)

@@ -10,6 +10,7 @@
 #include <QScopedPointer>
 #include <QWidget>
 
+#include <Painting/Context.h>
 #include <Painting/Layer.h>
 #include <Painting/PaintTool.h>
 
@@ -27,6 +28,8 @@ public:
     explicit CanvasWidget(QWidget *parent = 0);
     ~CanvasWidget();
 
+    Painting::Context &context();
+
     /// Resets the canvas to its default color
     void clear();
 
@@ -35,9 +38,6 @@ public:
 
     /// Sets the tool that is used to paint
     void setCurrentTool(Painting::PaintTool *tool);
-    /// Sets the outline color that is used to paint
-    void setPaintColor(const QColor &currentColor);
-    void setBackgroundColor(const QColor &backgroundColor);
 
 protected:
     void mousePressEvent(QMouseEvent *);
@@ -66,9 +66,7 @@ private:
     QScopedPointer<Painting::Layer> mPaintLayer;
     Painting::PaintTool *mCurrentTool;
 
-    /* TODO: both colors are also in Toolbar, move them to a context? */
-    QColor mPaintColor;
-    QColor mBackgroundColor;
+    Painting::Context mContext;
 };
 
 }
