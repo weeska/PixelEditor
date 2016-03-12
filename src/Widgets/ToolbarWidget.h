@@ -20,21 +20,26 @@ class ToolbarWidget : public QWidget
 public:
     ToolbarWidget(Widgets::CanvasWidget &widget, QWidget *parent = 0);
     ~ToolbarWidget();
-    void setColor(const QColor &currentColor);
+
+    void setPaintColor(const QColor &paintColor);
+    void setBackgroundColor(const QColor &backgroundColor);
 
 private slots:
-    void onCurrentColorButtonPressed();
     void onToolChanged(int toolId);
+    void onPaintColorButtonPressed();
+    void onBackgroundColorButtonPressed();
 
 private:
-    void updateColor();
+    void updatePaintColorLabel();
+    void updateBackgroundColorLabel();
 
 private:
     Ui::ToolbarWidget *ui;
     Widgets::CanvasWidget &mCanvas;
     QSignalMapper mToolMapper;
 
-    QColor mCurrentColor;
+    QColor mPaintColor;
+    QColor mBackgroundColor;
 };
 
 }

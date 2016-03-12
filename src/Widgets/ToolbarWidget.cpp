@@ -36,7 +36,7 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolbarWidget),
     mCanvas(canvas),
-    mCurrentColor(Qt::black)
+    mPaintColor(Qt::black)
 {
     ui->setupUi(this);
 
@@ -53,8 +53,11 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
     this->connect(&mToolMapper, SIGNAL(mapped(int)), SLOT(onToolChanged(int)));
     this->onToolChanged(ToolType::Pen);
 
-    this->connect(ui->currentColorButton, SIGNAL(pressed()), SLOT(onCurrentColorButtonPressed()));
-    this->updateColor();
+    this->connect(ui->paintColorButton, SIGNAL(pressed()), SLOT(onPaintColorButtonPressed()));
+    this->connect(ui->backgroundColorButton, SIGNAL(pressed()), SLOT(onBackgroundColorButtonPressed()));
+
+    this->setPaintColor(Qt::black);
+    this->setBackgroundColor(Qt::white);
 }
 
 ToolbarWidget::~ToolbarWidget()
@@ -62,11 +65,22 @@ ToolbarWidget::~ToolbarWidget()
     delete ui;
 }
 
-void ToolbarWidget::setColor(const QColor &currentColor)
+void ToolbarWidget::setPaintColor(const QColor &paintColor)
 {
-    mCurrentColor = currentColor;
+    mPaintColor = paintColor;
 
-    updateColor();
+    this->updatePaintColorLabel();
+
+    mCanvas.setPaintColor(mPaintColor);
+}
+
+void ToolbarWidget::setBackgroundColor(const QColor &backgroundColor)
+{
+    mBackgroundColor = backgroundColor;
+
+    this->updateBackgroundColorLabel();
+
+    mCanvas.setBackgroundColor(mBackgroundColor);
 }
 
 void ToolbarWidget::onToolChanged(int toolId)
@@ -79,19 +93,32 @@ void ToolbarWidget::onToolChanged(int toolId)
     }
 }
 
-void ToolbarWidget::updateColor()
+void ToolbarWidget::updatePaintColorLabel()
 {
     QPixmap currentColorMap(32, 32);
-    currentColorMap.fill(mCurrentColor);
-    ui->currentColorButton->setIcon(QIcon(currentColorMap));
-
-    mCanvas.setCurrentColor(mCurrentColor);
+    currentColorMap.fill(mPaintColor);
+    ui->paintColorButton->setIcon(QIcon(currentColorMap));
 }
 
-void ToolbarWidget::onCurrentColorButtonPressed()
+void ToolbarWidget::updateBackgroundColorLabel()
 {
-    QColorDialog colorPicker(mCurrentColor, this);
-    mCurrentColor = colorPicker.getColor(mCurrentColor, this);
+    QPixmap currentColorMap(32, 32);
+    currentColorMap.fill(mBackgroundColor);
+    ui->backgroundColorButton->setIcon(QIcon(currentColorMap));
 
-    this->updateColor();
+}
+
+void ToolbarWidget::onPaintColorButtonPressed()
+{
+    QColorDialog colorPicker(mPaintColor, this);
+    const auto &color = colorPicker.getColor(mPaintColor, this);
+    this->setPaintColor(color);
+}
+
+void ToolbarWidget::onBackgroundColorButtonPressed()
+{
+    QColorDialog colorPicker(mBackgroundColor, this);
+    const auto &color = colorPicker.getColor(mBackgroundColor, this);
+
+    this->setBackgroundColor(color);
 }

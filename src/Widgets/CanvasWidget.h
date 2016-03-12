@@ -36,7 +36,8 @@ public:
     /// Sets the tool that is used to paint
     void setCurrentTool(Painting::PaintTool *tool);
     /// Sets the outline color that is used to paint
-    void setCurrentColor(QColor currentColor);
+    void setPaintColor(const QColor &currentColor);
+    void setBackgroundColor(const QColor &backgroundColor);
 
 protected:
     void mousePressEvent(QMouseEvent *);
@@ -65,7 +66,9 @@ private:
     QScopedPointer<Painting::Layer> mPaintLayer;
     Painting::PaintTool *mCurrentTool;
 
-    QColor mCurrentColor;
+    /* TODO: both colors are also in Toolbar, move them to a context? */
+    QColor mPaintColor;
+    QColor mBackgroundColor;
 };
 
 }

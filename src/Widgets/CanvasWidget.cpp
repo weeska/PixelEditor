@@ -21,7 +21,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
     mBaseRect(::defaultRect),
     mPaintLayer(nullptr),
     mCurrentTool(nullptr),
-    mCurrentColor(Qt::black)
+    mPaintColor(Qt::black)
 {
     ui->setupUi(this);
 
@@ -40,6 +40,11 @@ void CanvasWidget::initLayers()
 
     mScene.addItem(mPaintLayer.data());
     mScene.addItem(mDisplayLayer.data());
+}
+
+void CanvasWidget::setBackgroundColor(const QColor &backgroundColor)
+{
+    mBackgroundColor = backgroundColor;
 }
 
 void CanvasWidget::removeLayers()
@@ -97,9 +102,9 @@ void CanvasWidget::setCurrentTool(Painting::PaintTool *tool)
     mCurrentTool = tool;
 }
 
-void CanvasWidget::setCurrentColor(QColor currentColor)
+void CanvasWidget::setPaintColor(const QColor &currentColor)
 {
-    mCurrentColor = currentColor;
+    mPaintColor = currentColor;
 }
 
 void CanvasWidget::mousePressEvent(QMouseEvent *event)
@@ -150,7 +155,7 @@ void CanvasWidget::beginTool(const QPoint &pos)
     auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);
-    painter.setPen(mCurrentColor);
+    painter.setPen(mPaintColor);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
 
     mCurrentTool->begin(pos, painter, pixmap);
@@ -167,7 +172,7 @@ void CanvasWidget::moveTool(const QPoint &pos)
     auto pixmap = mDisplayLayer->pixmap();
 
     QPainter painter(&pixmap);
-    painter.setPen(mCurrentColor);
+    painter.setPen(mPaintColor);
     painter.setBrush(QBrush(QColor(Qt::transparent)));
 
     mCurrentTool->move(pos, painter, pixmap);
