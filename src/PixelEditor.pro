@@ -20,7 +20,8 @@ SOURCES += \
     Painting/CircleTool.cpp \
     Painting/LineTool.cpp \
     Painting/PenTool.cpp \
-    Painting/Context.cpp
+    Painting/Context.cpp \
+    Widgets/PreviewWidget.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
@@ -33,12 +34,14 @@ HEADERS  += \
     Painting/CircleTool.h \
     Painting/LineTool.h \
     Painting/PenTool.h \
-    Painting/Context.h
+    Painting/Context.h \
+    Widgets/PreviewWidget.h
 
 FORMS += \
     Widgets/MainWindow.ui \
     Widgets/ToolbarWidget.ui \
-    Widgets/CanvasWidget.ui
+    Widgets/CanvasWidget.ui \
+    Widgets/PreviewWidget.ui
 
 RESOURCES += \
     Resources.qrc
