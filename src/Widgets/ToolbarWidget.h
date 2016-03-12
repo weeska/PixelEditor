@@ -3,6 +3,7 @@
 
 #include "CanvasWidget.h"
 
+#include <QButtonGroup>
 #include <QColor>
 #include <QSignalMapper>
 #include <QWidget>
@@ -37,6 +38,8 @@ private:
     Ui::ToolbarWidget *ui;
     Widgets::CanvasWidget &mCanvas;
     QSignalMapper mToolMapper;
+
+    QButtonGroup mToolGroup;
 
     QColor mPaintColor;
     QColor mBackgroundColor;

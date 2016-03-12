@@ -40,10 +40,16 @@ ToolbarWidget::ToolbarWidget(Widgets::CanvasWidget &canvas, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->connect(ui->circleButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
+    mToolGroup.setExclusive(true);
+    mToolGroup.addButton(ui->penButton, Pen);
+    mToolGroup.addButton(ui->lineButton, Line);
+    mToolGroup.addButton(ui->fillButton, Fill);
+    mToolGroup.addButton(ui->circleButton, Circle);
+
     this->connect(ui->lineButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
-    this->connect(ui->penButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
+    this->connect(ui->circleButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
     this->connect(ui->fillButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
+    this->connect(ui->penButton, SIGNAL(pressed()), &mToolMapper, SLOT(map()));
 
     mToolMapper.setMapping(ui->circleButton, static_cast<int>(ToolType::Circle));
     mToolMapper.setMapping(ui->lineButton, static_cast<int>(ToolType::Line));
@@ -90,6 +96,14 @@ void ToolbarWidget::onToolChanged(int toolId)
     if(tool)
     {
         mCanvas.setCurrentTool(tool.data());
+    }
+
+    auto button = mToolGroup.button(toolId);
+    Q_ASSERT(button);
+    if(button)
+    {
+        button->setCheckable(true);
+        button->setChecked(true);
     }
 }
 
