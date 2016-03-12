@@ -7,6 +7,10 @@
 
 namespace Painting {
 
+/**
+ * @brief Paints individual pixels.
+ */
+
 class PenTool : public PaintTool
 {
 public:

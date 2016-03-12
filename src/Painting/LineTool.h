@@ -5,6 +5,12 @@
 
 namespace Painting {
 
+/**
+ * @brief Paints a Line.
+ *
+ * The line is painted from start to end of the mouse movements.
+ */
+
 class LineTool : public Painting::PaintTool
 {
 public:

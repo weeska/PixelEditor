@@ -5,6 +5,12 @@
 
 namespace Painting {
 
+/**
+ * @brief Paints a cirle.
+ *
+ * The circle is painted inside the bounding box of the mouse movement.
+ */
+
 class CircleTool : public Painting::PaintTool
 {
 public:
