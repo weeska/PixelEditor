@@ -182,4 +182,6 @@ void CanvasWidget::endTool()
 
     painter.drawPixmap(QPoint(), paintPixmap);
     mDisplayLayer->setPixmap(displayPixmap);
+
+    emit pixmapChanged(mDisplayLayer->pixmap());
 }

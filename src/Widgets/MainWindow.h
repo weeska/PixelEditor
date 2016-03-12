@@ -18,6 +18,7 @@ public:
     ~MainWindow();
 
     void initializeToolWidget();
+    void initializePreviewWidget();
 
 private:
     QString standardLocation() const;

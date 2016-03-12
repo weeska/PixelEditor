@@ -1,4 +1,5 @@
 #include "ToolbarWidget.h"
+#include "PreviewWidget.h"
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -28,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->initializeToolWidget();
-
+    this->initializePreviewWidget();
 
     this->connect(ui->actionNew, SIGNAL(triggered(bool)), SLOT(onNewImageAction()));
 
@@ -52,6 +53,19 @@ void MainWindow::initializeToolWidget()
 
     this->addDockWidget(Qt::LeftDockWidgetArea, toolsDock);
 
+}
+
+void MainWindow::initializePreviewWidget()
+{
+    auto previewDock = new QDockWidget(tr("Preview"), this);
+    auto preview = new PreviewWidget(*ui->centralWidget, previewDock);
+    previewDock->setWidget(preview);
+
+    previewDock->setMinimumWidth(preview->minimumWidth());
+
+    this->addDockWidget(Qt::RightDockWidgetArea, previewDock);
+
+    this->connect(ui->centralWidget, SIGNAL(pixmapChanged(QPixmap)), preview, SLOT(updatePixmap(QPixmap)));
 }
 
 void MainWindow::onNewImageAction()

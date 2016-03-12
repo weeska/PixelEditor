@@ -39,6 +39,9 @@ public:
     /// Sets the tool that is used to paint
     void setCurrentTool(Painting::PaintTool *tool);
 
+signals:
+    void pixmapChanged(const QPixmap &pixmap);
+
 protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
