@@ -126,7 +126,10 @@ void ToolbarWidget::onPaintColorButtonPressed()
 {
     QColorDialog colorPicker(mPaintColor, this);
     const auto &color = colorPicker.getColor(mPaintColor, this);
-    this->setPaintColor(color);
+
+    if(color.isValid()) {
+        this->setPaintColor(color);
+    }
 }
 
 void ToolbarWidget::onBackgroundColorButtonPressed()
@@ -134,5 +137,7 @@ void ToolbarWidget::onBackgroundColorButtonPressed()
     QColorDialog colorPicker(mBackgroundColor, this);
     const auto &color = colorPicker.getColor(mBackgroundColor, this);
 
-    this->setBackgroundColor(color);
+    if(color.isValid()) {
+        this->setBackgroundColor(color);
+    }
 }
