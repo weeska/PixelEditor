@@ -8,6 +8,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 
+#include <Painting/LayerPainter.h>
+
 using namespace Widgets;
 
 namespace {
@@ -17,10 +19,7 @@ const QRect defaultRect(0, 0, 32, 32);
 CanvasWidget::CanvasWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CanvasWidget),
-    mIsToolActive(false),
-    mBaseRect(::defaultRect),
-    mPaintLayer(nullptr),
-    mCurrentTool(nullptr)
+    mBaseRect(::defaultRect)
 {
     ui->setupUi(this);
 
@@ -31,20 +30,16 @@ CanvasWidget::CanvasWidget(QWidget *parent) :
 
 void CanvasWidget::initLayers()
 {
-    mPaintLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
-    mDisplayLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
+    mLayer.reset(new Painting::Layer(::defaultRect.size(), Qt::white));
 
-    mDisplayLayer->setZValue(0);
-    mPaintLayer->setZValue(1);
+    mLayer->setZValue(0);
 
-    mScene.addItem(mPaintLayer.data());
-    mScene.addItem(mDisplayLayer.data());
+    mScene.addItem(mLayer.data());
 }
 
 void CanvasWidget::removeLayers()
 {
-    mScene.removeItem(mDisplayLayer.data());
-    mScene.removeItem(mPaintLayer.data());
+    mScene.removeItem(mLayer.data());
 }
 
 CanvasWidget::~CanvasWidget()
@@ -66,16 +61,13 @@ void CanvasWidget::clear()
 
 QImage CanvasWidget::grabImage() const
 {
-    return mDisplayLayer->pixmap().toImage();
+    return mLayer->pixmap().toImage();
 }
 
 void CanvasWidget::initWithImage(const QImage &image)
 {
     auto pixmap = QPixmap::fromImage(image);
-    mDisplayLayer->setPixmap(pixmap);
-
-    pixmap.fill(Qt::transparent);
-    mPaintLayer->setPixmap(pixmap);
+    mLayer->setPixmap(pixmap);
 
     mBaseRect.setSize(pixmap.size());
     this->fillCanvasWithPixmap();
@@ -98,90 +90,38 @@ void CanvasWidget::showEvent(QShowEvent *)
 
 void CanvasWidget::setCurrentTool(Painting::PaintTool *tool)
 {
-    mCurrentTool = tool;
+    mContext.setPaintTool(tool);
 }
 
 void CanvasWidget::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() != Qt::LeftButton)
-    {
+    if(event->button() != Qt::LeftButton) {
         return;
     }
 
-    Q_ASSERT(mCurrentTool);
-    if(!mCurrentTool)
-    {
-        return;
-    }
-
-    mIsToolActive = true;
-
-    const QPointF itemPosF = ui->graphicsView->mapToScene(event->pos());
+    const auto itemPosF = ui->graphicsView->mapToScene(event->pos());
     const QPoint itemPos(std::floor(itemPosF.x()), std::floor(itemPosF.y()));
 
-    this->beginTool(itemPos);
-
+    mCurrentPainter.reset(new Painting::LayerPainter(mContext, *mLayer));
+    mCurrentPainter->begin(itemPos);
 }
 
 void CanvasWidget::mouseReleaseEvent(QMouseEvent *)
 {
-    mIsToolActive = false;
-    this->endTool();
+    if(mCurrentPainter) {
+        mCurrentPainter->end();
+        mCurrentPainter.reset();
+
+        emit pixmapChanged(mLayer->pixmap());
+    }
 }
 
 void CanvasWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (mIsToolActive) {
-        const QPointF itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
+    if (mCurrentPainter) {
+        const auto itemPosF = ui->graphicsView->mapToScene(static_cast<QMouseEvent*>(event)->pos());
         const QPoint itemPos(std::floor(itemPosF.x()), std::floor(itemPosF.y()));
 
-        this->moveTool(itemPos);
+        mCurrentPainter->move(itemPos);
     }
-}
-
-void CanvasWidget::beginTool(const QPoint &pos)
-{
-    Q_ASSERT(mCurrentTool);
-    if(!mCurrentTool) {
-        return;
-    }
-
-    auto pixmap = mDisplayLayer->pixmap();
-
-    QPainter painter(&pixmap);
-    painter.setPen(mContext.paintColor());
-    painter.setBrush(QBrush(QColor(Qt::transparent)));
-
-    mCurrentTool->begin(pos, painter, pixmap);
-    mPaintLayer->setPixmap(pixmap);
-}
-
-void CanvasWidget::moveTool(const QPoint &pos)
-{
-    Q_ASSERT(mCurrentTool);
-    if(!mCurrentTool) {
-        return;
-    }
-
-    auto pixmap = mDisplayLayer->pixmap();
-
-    QPainter painter(&pixmap);
-    painter.setPen(mContext.paintColor());
-    painter.setBrush(QBrush(QColor(Qt::transparent)));
-
-    mCurrentTool->move(pos, painter, pixmap);
-    mPaintLayer->setPixmap(pixmap);
-}
-
-void CanvasWidget::endTool()
-{
-    const auto &paintPixmap = mPaintLayer->pixmap();
-    auto displayPixmap = mDisplayLayer->pixmap();
-
-    QPainter painter(&displayPixmap);
-
-    painter.drawPixmap(QPoint(), paintPixmap);
-    mDisplayLayer->setPixmap(displayPixmap);
-
-    emit pixmapChanged(mDisplayLayer->pixmap());
 }

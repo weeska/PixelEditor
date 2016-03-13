@@ -12,6 +12,7 @@
 
 #include <Painting/Context.h>
 #include <Painting/Layer.h>
+#include <Painting/LayerPainter.h>
 #include <Painting/PaintTool.h>
 
 namespace Widgets {
@@ -51,10 +52,6 @@ protected:
     void showEvent(QShowEvent *);
 
 private:
-    void beginTool(const QPoint &pos);
-    void moveTool(const QPoint &pos);
-    void endTool();
-
     void fillCanvasWithPixmap();
     void removeLayers();
     void initLayers();
@@ -62,14 +59,12 @@ private:
 private:
     Ui::CanvasWidget *ui;
 
-    bool mIsToolActive;
-    QGraphicsScene mScene;
     QRect mBaseRect;
-    QScopedPointer<Painting::Layer> mDisplayLayer;
-    QScopedPointer<Painting::Layer> mPaintLayer;
-    Painting::PaintTool *mCurrentTool;
-
     Painting::Context mContext;
+    QGraphicsScene mScene;
+
+    QScopedPointer<Painting::Layer> mLayer;
+    QScopedPointer<Painting::LayerPainter> mCurrentPainter;
 };
 
 }

@@ -21,7 +21,8 @@ SOURCES += \
     Painting/LineTool.cpp \
     Painting/PenTool.cpp \
     Painting/Context.cpp \
-    Widgets/PreviewWidget.cpp
+    Widgets/PreviewWidget.cpp \
+    Painting/LayerPainter.cpp
 
 HEADERS  += \
     Widgets/MainWindow.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     Painting/LineTool.h \
     Painting/PenTool.h \
     Painting/Context.h \
-    Widgets/PreviewWidget.h
+    Widgets/PreviewWidget.h \
+    Painting/LayerPainter.h
 
 FORMS += \
     Widgets/MainWindow.ui \

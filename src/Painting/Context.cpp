@@ -22,4 +22,14 @@ void Context::setPaintColor(const QColor &paintColor)
     mPaintColor = paintColor;
 }
 
+PaintTool *Context::paintTool() const
+{
+    return mPaintTool;
+}
+
+void Context::setPaintTool(PaintTool *paintTool)
+{
+    mPaintTool = paintTool;
+}
+
 } // namespace Painting
