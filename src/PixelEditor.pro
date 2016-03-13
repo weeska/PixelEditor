@@ -11,17 +11,17 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    Widgets/MainWindow.cpp \
-    Widgets/ToolbarWidget.cpp \
-    Widgets/CanvasWidget.cpp \
-    Painting/Layer.cpp \
     Widgets/CanvasGraphicsView.cpp \
-    Painting/FillTool.cpp \
+    Widgets/CanvasWidget.cpp \
+    Widgets/MainWindow.cpp \
+    Widgets/PreviewWidget.cpp \
+    Widgets/ToolbarWidget.cpp \
     Painting/CircleTool.cpp \
+    Painting/Layer.cpp \
+    Painting/FillTool.cpp \
     Painting/LineTool.cpp \
     Painting/PenTool.cpp \
     Painting/Context.cpp \
-    Widgets/PreviewWidget.cpp \
     Painting/LayerPainter.cpp
 
 HEADERS  += \
@@ -29,14 +29,14 @@ HEADERS  += \
     Widgets/ToolbarWidget.h \
     Widgets/CanvasWidget.h \
     Painting/PaintTool.h \
-    Painting/Layer.h \
+    Widgets/PreviewWidget.h \
     Widgets/CanvasGraphicsView.h \
+    Painting/Layer.h \
     Painting/FillTool.h \
     Painting/CircleTool.h \
     Painting/LineTool.h \
     Painting/PenTool.h \
     Painting/Context.h \
-    Widgets/PreviewWidget.h \
     Painting/LayerPainter.h
 
 FORMS += \

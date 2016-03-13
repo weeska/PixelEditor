@@ -8,25 +8,32 @@
 
 int main(int argc, char *argv[])
 {
+    const int iterations = 10;
+
     QGuiApplication app(argc, argv);
 
     std::vector<int> sizes{50, 100, 200, 500, 1000};
 
     for(auto size : sizes) {
-        Painting::FillTool tool;
-        QPixmap pixmap(size, size);
-        pixmap.fill(Qt::white);
 
-        QPainter painter(&pixmap);
-        painter.setPen(QColor(Qt::black));
+        double summedTimes = 0.0;
 
-        QElapsedTimer timer;
-        timer.start();
-        tool.begin(pixmap.rect().center(), painter, pixmap);
-        const auto elapsed = timer.elapsed();
+        for(int i=0; i < iterations; ++i) {
+            Painting::FillTool tool;
+            QPixmap pixmap(size, size);
+            pixmap.fill(Qt::white);
+
+            QPainter painter(&pixmap);
+            painter.setPen(QColor(Qt::black));
+
+            QElapsedTimer timer;
+            timer.start();
+            tool.begin(pixmap.rect().center(), painter, pixmap);
+            summedTimes += timer.elapsed();
+        }
 
         std::cout << size << "x" << size << "\t: "
-                  << elapsed
+                  << summedTimes / iterations
                   << "ms"
                   << std::endl;
 

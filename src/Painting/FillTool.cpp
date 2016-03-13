@@ -3,6 +3,13 @@
 #include <qDebug>
 #include <QQueue>
 
+namespace {
+const QPoint leftDiff(-1, 0);
+const QPoint rightDiff(+1, 0);
+const QPoint upDiff(0, 1);
+const QPoint downDiff(0, -1);
+}
+
 void Painting::FillTool::begin(const QPoint &point, QPainter &painter, const QPixmap &pixmap)
 {
     QImage image = pixmap.toImage();
@@ -29,10 +36,10 @@ void Painting::FillTool::begin(const QPoint &point, QPainter &painter, const QPi
             {
                 image.setPixel(currentPoint, newColor);
 
-                neighbours.enqueue(QPoint(currentPoint.x() - 1, currentPoint.y()));
-                neighbours.enqueue(QPoint(currentPoint.x() + 1, currentPoint.y()));
-                neighbours.enqueue(QPoint(currentPoint.x(), currentPoint.y() - 1));
-                neighbours.enqueue(QPoint(currentPoint.x(), currentPoint.y() + 1));
+                neighbours.enqueue(currentPoint + leftDiff);
+                neighbours.enqueue(currentPoint + rightDiff);
+                neighbours.enqueue(currentPoint + upDiff);
+                neighbours.enqueue(currentPoint + downDiff);
             }
         }
     }
