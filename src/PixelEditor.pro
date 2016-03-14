@@ -9,6 +9,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = PixelEditor
 TEMPLATE = app
 
+PRECOMPILED_HEADER = Stable.h
+
 SOURCES += \
     main.cpp \
     Widgets/CanvasGraphicsView.cpp \
